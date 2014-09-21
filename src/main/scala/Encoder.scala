@@ -25,13 +25,13 @@ object Encoder {
       }
       Stream.cons(Alphabet(char), chars(bits.drop(5)))
     }
-    def hash(x: Double, min: Double, max: Double): Stream[Boolean] = {
+    def bools(x: Double, min: Double, max: Double): Stream[Boolean] = {
       val mid = (min + max) / 2
-      if (x >= min) Stream.cons(true, hash(x, mid, max))
-      else Stream.cons(false, hash(x, min, max))
+      if (x >= min) Stream.cons(true, bools(x, mid, max))
+      else Stream.cons(false, bools(x, min, max))
     }
     def twist[A](x: Stream[A], y: Stream[A]): Stream[A] =
       Stream.cons(x.head, twist(y, x.tail))
-    chars(twist(hash(lat, -180, 180), hash(lon, -90, 90)))
+    chars(twist(bools(lat, -180, 180), bools(lon, -90, 90)))
   }
 }
